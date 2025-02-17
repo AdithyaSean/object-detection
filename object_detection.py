@@ -6,7 +6,7 @@ import sys
 def parse_args():
     parser = argparse.ArgumentParser(description='Object detection from IP camera using YOLOv8')
     parser.add_argument('--camera-url', type=str, required=True,
-                      help='IP camera URL (e.g., http://username:password@ip_address:port/video)')
+                      help='IP camera URL (e.g., http://username:password@ip_address:port/video) or "0" to use webcam')
     return parser.parse_args()
 
 def main():
@@ -23,7 +23,8 @@ def main():
 
     # Initialize video capture
     try:
-        cap = cv2.VideoCapture(camera_url)
+        # If camera_url is '0', use webcam, otherwise use IP camera URL
+        cap = cv2.VideoCapture(0 if camera_url == '0' else camera_url)
         if not cap.isOpened():
             raise Exception("Failed to open camera stream")
     except Exception as e:
